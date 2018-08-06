@@ -117,6 +117,9 @@ docker-compose up
 - ES6 is used and babel is used to transpile
 - Versioning of API is done
 - Supports query of car
+- Used supertest for integration test
+- Used mongodb for express session storage also
+- Cors enabled
 
 ## Unit Test
 ```
