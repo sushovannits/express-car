@@ -1,12 +1,7 @@
 {
     "presets": 
     [
-        ["env", {
-            "targets": {
-              "node": "current"
-            }
-          }
-        ], "jest"
+        "env"
     ],
     "plugins": [
         ["transform-runtime", {
@@ -14,8 +9,5 @@
             "regenerator": true
         }],
         ["babel-plugin-transform-object-rest-spread"]
-    ],
-    "ignore": [
-        "**/*.spec.js"
     ]
 }

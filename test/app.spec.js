@@ -4,14 +4,17 @@ import { populateDbMock, dropAll } from '../src/handlers/test/mock-gen';
 import mongoose from 'mongoose';
 import { expect } from 'chai';
 
-describe('Retrieval of cars', async () => {
-  before(async () => {
+describe('Retrieval of cars', () => {
+  beforeAll(async () => {
     await dropAll();
     await populateDbMock({make: 'SUB', color: 'White'}); //inserts 16 items
   });
 
-  after(async () => {
+  afterAll(async () => {
     await mongoose.connection.dropDatabase();
+    await mongoose.disconnect();
+    await mongoose.connection.close();
+    await server.close();
   })
   it('GET cars', async function () {
     const res = await request(server)
@@ -96,7 +99,7 @@ describe('Retrieval of cars', async () => {
     const res = await request(server)
       .post('/cars/12345');
     expect(res.status).to.equal(400);
-    expect(res.body).to.have.all.keys('err');
+    expect(res.body).to.have.all.keys('errorMsg');
   });
 
   it('POST /cars/ test duplicate items', async function () {
@@ -116,7 +119,7 @@ describe('Retrieval of cars', async () => {
         color : 'White'
       });
     expect(repostRes.status).to.equal(400);
-    expect(repostRes.body).to.have.all.keys('err', 'message');
+    expect(repostRes.body).to.have.all.keys('errorMsg');
   });
 
   it('PUT /cars/:id', async function () {
