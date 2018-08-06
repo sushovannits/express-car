@@ -24,6 +24,8 @@ An express app to support CRUD on car model information
 ## System Requirements
 - node
 - yarn/ npm
+- mongodb
+- docker
 
 ## Build
 ```
@@ -36,6 +38,9 @@ yarn run build
 - Anything to override can be modified in .env or set explicitly
 
 ## Run
+- By default app will start at `http://localhost:8000/`
+- Must start mongodb with `mongod` command
+
 ```
 yarn run start
 ```
