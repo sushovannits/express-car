@@ -6,7 +6,7 @@ An express app to support CRUD on car model information
 - [System Requirements](#system-requirements)
 - [How To Run](#how-to-run)
 - [API](#api)
-  * [GET /cars](#/get-cars)
+  * [GET /cars](#get-cars)
 - [Implementation Details](#implementation-details)
 - [Unit Test](#unit-test)
 <!-- tocstop -->
