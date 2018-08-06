@@ -3188,6 +3188,10 @@ kleur@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-2.0.1.tgz#7cc64b0d188d0dcbc98bdcdfdda2cc10619ddce8"
 
+lamlog@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/lamlog/-/lamlog-2.0.1.tgz#0bdbfc1d7d0d6ba4538a38cfe71e5ba7c62c6ad7"
+
 latest-version@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-3.1.0.tgz#a205383fea322b33b5ae3b18abee0dc2f356ee15"

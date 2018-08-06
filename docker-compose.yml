@@ -4,8 +4,12 @@ services:
     container_name: app
     restart: always
     build: .
+    environment:
+      - PRODUCTION_APP_PORT=${PRODUCTION_APP_PORT}
+      - PRODUCTION_HOST_URL=${PRODUCTION_HOST_URL}
+      - PRODUCTION_DB_PORT=${PRODUCTION_DB_PORT}
     ports:
-      - "8000:8000"
+      - "${PRODUCTION_APP_PORT}:${PRODUCTION_APP_PORT}"
     links:
       - mongo
   mongo:
@@ -13,5 +17,7 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
+    environment:
+      - PRODUCTION_DB_PORT=${PRODUCTION_DB_PORT}
     ports:
-      - "27017:27017"
+      - "${PRODUCTION_DB_PORT}:${PRODUCTION_DB_PORT}"

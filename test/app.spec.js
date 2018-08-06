@@ -15,7 +15,8 @@ describe('Retrieval of cars', () => {
     await mongoose.disconnect();
     await mongoose.connection.close();
     await server.close();
-  })
+  }, 10000);
+
   it('GET cars', async function () {
     const res = await request(server)
       .get('/cars');

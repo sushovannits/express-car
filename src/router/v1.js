@@ -1,8 +1,7 @@
 import * as express from 'express';
-import Car from '../models/cars';
 import * as carHandler from '../handlers/car';
 
-export const router = express.Router();
+const router = express.Router();
 
 /**
  * Router specific middleware
@@ -24,3 +23,5 @@ router
   .patch(carHandler.patchCar)
   .put(carHandler.putCar)
   .delete(carHandler.deleteCar);
+
+export default router;
