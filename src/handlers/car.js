@@ -103,40 +103,41 @@ export function getCar(req, res) {
   createResponse(res, 200, null, 'Item found', req.car);
 }
 
-export function putCar(req, res) {
+export async function putCar(req, res) {
   req.car.make = req.body.make;
   req.car.model = req.body.model;
   req.car.color = req.body.color;
-  req.car.save().then((newCar) => {
+  try {
+    const newCar = await req.car.save();
     createResponse(res, 202, null, 'Car updated', newCar);
-  }).catch((err) => {
+  } catch(err) {
     const { statusCode = 500, errorMsg = 'Car could not be updated' } = handleMongooseError(err);
     createResponse(res, statusCode, errorMsg);
-  });
+  }
 }
 
-export function patchCar(req, res) {
+export async function patchCar(req, res) {
   if (req.body.id) {
     delete req.body.id;
   }
   Object.keys(req.body).forEach((prop) => {
     req.car[prop] = req.body[prop];
   });
-  req.car.save()
-    .then((newCar) => {
-      createResponse(res, 202, null, 'Car modified', newCar);
-    })
-    .catch((err) => {
-      const { statusCode = 500, errorMsg = 'Car could not be modified' } = handleMongooseError(err);
-      createResponse(res, statusCode, errorMsg);
-    });
+  try {
+    const newCar = await req.car.save();
+    createResponse(res, 202, null, 'Car modified', newCar);
+  } catch(err) {
+    const { statusCode = 500, errorMsg = 'Car could not be modified' } = handleMongooseError(err);
+    createResponse(res, statusCode, errorMsg);
+  }
 }
 
-export function deleteCar(req, res) {
-  req.car.remove().then(() => {
+export async function deleteCar(req, res) {
+  try {
+    await req.car.remove();
     createResponse(res, 202, null, 'Car deleted');
-  }).catch((err) => {
+  } catch(err) {
     const { statusCode = 500, errorMsg = 'Car could not be deleted' } = handleMongooseError(err);
     createResponse(res, statusCode, errorMsg);
-  });
+  }
 }
