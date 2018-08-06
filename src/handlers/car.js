@@ -5,6 +5,7 @@ import {
 } from './utils';
 import mongoose from 'mongoose';
 
+
 // TODO: Use a util/createResponse function
 // TDOD: Use req.json
 
@@ -51,7 +52,7 @@ export async function getCars(req, res, next) {
     } catch(err){
       console.log(err);
       const {statusCode = 500, errorMsg = 'Could not retrieve cars'} = handleMongooseError(err);  
-      createResponse(res, statusCode, errorMsg, null, null);
+      createResponse(res, statusCode, errorMsg);
     }
 }
 
@@ -63,8 +64,8 @@ export function createCar(req, res, next) {
   car.save().then(newCar => {
     createResponse(res, 201, null, 'Car created', newCar);
   }).catch(err => {
-    const {statusCode = 500, errorMsg} = handleMongooseError(err);
-    createResponse(res, statusCode, errorMsg, 'Could not create car');
+    const {statusCode = 500, errorMsg = 'Could not create car' } = handleMongooseError(err);
+    createResponse(res, statusCode, errorMsg);
   })
 }
 
@@ -86,7 +87,7 @@ export function findPopulateCarById(req, res, next) {
     })
     .catch((err) => {
       const {statusCode = 500, errorMsg = 'Could not retrieve car'} = handleMongooseError(err);
-      createResponse(res, 400, errorMsg);
+      createResponse(res, statusCode, errorMsg);
     });
 }
 
@@ -101,7 +102,7 @@ export function putCar(req, res, next) {
   req.car.save().then(newCar => {
     createResponse(res, 202, null, 'Car updated', newCar);
   }).catch(err => {
-    const {statusCode = 500, errorMsg= 'Car could not be updated'} = handleMongooseError(err);
+    const {statusCode = 500, errorMsg = 'Car could not be updated'} = handleMongooseError(err);
     createResponse(res, statusCode, errorMsg);
   })
 }

@@ -1,9 +1,6 @@
-process.env.DB_NAME = 'mocktest'; //Overwriting the db to be used for test
-console.log(`DB_NAME is ${process.env.DB_NAME}`);
 import request from 'supertest';
-import 'babel-polyfill';
-import server from '../server';
-import { populateDbMock, dropAll } from '../handlers/test/mock-gen';
+import server from '../src/server';
+import { populateDbMock, dropAll } from '../src/handlers/test/mock-gen';
 import mongoose from 'mongoose';
 import { expect } from 'chai';
 

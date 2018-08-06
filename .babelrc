@@ -1,9 +1,21 @@
 {
     "presets": 
     [
-        "env", "es2015"
+        ["env", {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ], "jest"
     ],
     "plugins": [
-        "babel-plugin-transform-es2015-destructuring", "babel-plugin-transform-object-rest-spread"
+        ["transform-runtime", {
+            "polyfill": false,
+            "regenerator": true
+        }],
+        ["babel-plugin-transform-object-rest-spread"]
+    ],
+    "ignore": [
+        "**/*.spec.js"
     ]
 }

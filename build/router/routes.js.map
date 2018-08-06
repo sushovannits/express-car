@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/router/routes.js"],"names":["v1"],"mappings":";;;;;;;AAAA;;QACQA,E,GAAAA,S","file":"routes.js","sourcesContent":["import { router as v1 } from './v1';\nexport {v1};\n"]}

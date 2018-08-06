@@ -1,8 +1,8 @@
-export function createResponse(res, statusCode, err, message, body) {
+export function createResponse(res, statusCode, errorMsg, message, body) {
   return res
     .status(statusCode)
     .json({
-    ...err && {err},
+    ...errorMsg && {errorMsg},
     ...message && {message},
     ...body && {body}
   });

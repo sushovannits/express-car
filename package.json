@@ -9,11 +9,11 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.2",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-es2015-spread": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
@@ -24,12 +24,9 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
     "sinon": "^6.1.4",
-    "sinon-mongoose": "^2.2.1",
     "supertest": "^3.1.0"
   },
   "dependencies": {
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "connect-mongo": "^2.0.1",
@@ -41,5 +38,17 @@
     "express-validator": "^5.3.0",
     "mongoose": "^5.2.6",
     "morgan": "^1.9.0"
+  },
+  "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run build-server",
+    "start": "node ./build/server.js",
+    "lint": "eslint ./src",
+    "test": "NODE_ENV=test mocha --require babel-polyfill --require babel-register **/test/*.spec.js --exit"
+  },
+  "jest" : {
+    "testURL" : "http://localhost/",
+    "testEnvironment": "node"
   }
 }
