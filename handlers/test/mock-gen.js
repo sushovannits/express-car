@@ -5,8 +5,8 @@ import faker from 'faker';
 
 // TODO: Put it in init function
 const carFakeData = JSON.parse(fs.readFileSync(__dirname + '/car-mock-data.json'));
-const makerArr = carFakeData.map(maker => Object.keys(maker)[0]);
-const modelArr = carFakeData;
+const makerArr = Object.keys(carFakeData);
+const makeToModelMap = carFakeData;
 
 export function generateData() {
   const arr = [];
@@ -26,7 +26,7 @@ export function getValidRandomCar(num) {
   for(let i = 0; i < num; i++) {
     const car = new Car();
     car.make = faker.helpers.randomize(makerArr);
-    car.model = faker.helpers.randomize(modelArr[car.make]);
+    car.model = faker.helpers.randomize(makeToModelMap[car.make]);
     car.color = faker.helpers.randomize(colors);
     retArr.push(car);
   }
@@ -41,18 +41,30 @@ export function getValidCar() {
   return car;
 }
 
-export async function populateDbMock() {
+export async function populateDbMock({ num = 20, model, make, color }) {
   const carArr = [];
-  for(let i = 0; i < 50 ; i++ ) {
-    const make = faker.helpers.randomize(makerArr);
+  for(let i = 0; i < num ; i++ ) {
+    let makeGen, modelGen, colorGen;
+    if (model || make || color) {
+      // If nay of these are specified then we only randomize the maker
+      // For other fields we just keep iterating through the arrays
+      makeGen = make || faker.helpers.randomize(makerArr);
+      colorGen = color || colors[i%colors.length];
+      const makerModelArr = makeToModelMap[makeGen];
+      modelGen = model || makerModelArr[i%makerModelArr.length];
+    } else {
+      makeGen = faker.helpers.randomize(makerArr);
+      modelGen = faker.helpers.randomize(makeToModelMap[makeGen]);
+      colorGen = faker.helpers.randomize(colors);
+    }
     carArr.push({
-      make : make,
-      model : faker.helpers.randomize(modelArr[make]),
-      color : faker.helpers.randomize(colors),
+      make : makeGen,
+      model : modelGen,
+      color : colorGen
     })
   }
   try {
-    await Car.insertMany([carArr[0], carArr[0], carArr[1], carArr[2]], {
+    await Car.insertMany(carArr, {
       ordered: false
     });
     console.log('Data mocked');
@@ -64,4 +76,10 @@ export async function populateDbMock() {
     console.log(err);
     return false;
   }
+}
+
+export async function dropAll() {
+  await Car.remove({}).then( _ => {
+    console.log(`All removed`);
+  })
 }

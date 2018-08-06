@@ -17,9 +17,6 @@ const MongoStore = ConnectMongo(session);
 dotenv.load({
   path: '.env.config'
 });
-dotenv.load({
-  path: '.env.creds'
-});
 
 /**
  * Create the express app
@@ -29,9 +26,10 @@ export const app = express();
 /**
  * Conect database (MongoDB)
  */
-const mongodbUri = process.env.TEST 
-                    ? process.env.MONGODB_URI_TEST
-                    : process.env.MONGODB_URI;
+const dbName = process.env.NODE_ENV === 'test'
+                ? process.env.DB_NAME_TEST || 'testdb'
+                : process.env.DB_NAME;
+const mongodbUri = process.env.MONGODB_URI + dbName;
 mongoose.connect(mongodbUri, { useNewUrlParser: true });
 mongoose.connection.on('error', (err) => {
   console.error(err);

@@ -9,14 +9,17 @@ import mongoose from 'mongoose';
 // TDOD: Use req.json
 
 export async function getCars(req, res, next) {
-  // TODO Pagination support
-  const perPage = 10;
-  const page = req.query.page || 0;
+  const perPage = 10; //TODO: Make it configurable
+  let page = parseInt(req.query.page, 10);
+  if (isNaN(page)) {
+    page = 0;
+  }
   try {
     // TODO: Decide if we want to show information like page id is oyt of range
     const query = Car.find();
     const queryArray = [];
     const validFields = Object.keys(Car.schema.paths);
+    console.log(req.query);
     Object.keys(req.query || {}).forEach(criteria => {
       if (validFields.find(field => criteria === field)) {
         const arrValues = req.query[criteria] instanceof Array
@@ -33,7 +36,7 @@ export async function getCars(req, res, next) {
       query.and(queryArray);
     }
     await query
-      .skip(Math.max((perPage * page) - perPage, 0))
+      .skip(Math.max((perPage * page), 0))
       .limit(perPage)
       .exec()
       .then(allCars => {
