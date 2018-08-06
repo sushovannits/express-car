@@ -66,7 +66,7 @@ ksbdjhasdjhsgdjhsgd
 jashdsadgajhdg
 ## API
 
-### /get-cars
+### get-cars
 This is like starting the clock of life. Pet cannot be created without starting the clock.
 
 ## Implementation Details
