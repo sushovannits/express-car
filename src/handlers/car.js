@@ -64,39 +64,39 @@ export async function getCars(req, res) {
   }
 }
 
-export function createCar(req, res) {
+export async function createCar(req, res) {
   const car = new Car();
   car.make = req.body.make;
   car.model = req.body.model;
   car.color = req.body.color;
-  car.save().then((newCar) => {
+  try {
+    const newCar = await car.save();
     createResponse(res, 201, null, 'Car created', newCar);
-  }).catch((err) => {
+  } catch (err) {
     const { statusCode = 500, errorMsg = 'Could not create car' } = handleMongooseError(err);
     createResponse(res, statusCode, errorMsg);
-  });
+  }
 }
 
 // Functions on a existing item car
 // These handlers will be for route /car/:carId
 // A middleware will populate the car by default
 
-export function findPopulateCarById(req, res, next) {
+export async function findPopulateCarById(req, res, next) {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return createResponse(res, 400, 'Not a valid id');
   }
-  return Car.findById(req.params.id)
-    .then((car) => {
-      if (!car) {
-        return createResponse(res, 404, 'Item not found');
-      }
-      req.car = car;
-      return next();
-    })
-    .catch((err) => {
-      const { statusCode = 500, errorMsg = 'Could not retrieve car' } = handleMongooseError(err);
-      return createResponse(res, statusCode, errorMsg);
-    });
+  try {
+    const car = await Car.findById(req.params.id);
+    if (!car) {
+      return createResponse(res, 404, 'Item not found');
+    }
+    req.car = car;
+    return next();
+  } catch (err) {
+    const { statusCode = 500, errorMsg = 'Could not retrieve car' } = handleMongooseError(err);
+    return createResponse(res, statusCode, errorMsg);
+  }
 }
 
 export function getCar(req, res) {

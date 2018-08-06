@@ -9,8 +9,8 @@ export function createResponse(res, statusCode, errorMsg, message, body) {
 }
 
 export function handleMongooseError(err) {
-  let statusCode; let
-    errorMsg;
+  let statusCode;
+  let errorMsg;
   if (err && err.name === 'ValidationError') {
     statusCode = 400;
     errorMsg = err.message;
