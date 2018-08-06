@@ -3,11 +3,13 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import expressValidator from 'express-validator';
 import session from 'express-session';
-import router from './router/routes';
+import * as routes from './router/routes';
 import mongoose from 'mongoose';
 import ConnectMongo from 'connect-mongo';
 import chalk from 'chalk';
 import logger from 'morgan';
+import cors from 'cors';
+import { createResponse } from './handlers/utils';
 const MongoStore = ConnectMongo(session);
 
 /**
@@ -30,6 +32,7 @@ const dbName = process.env.NODE_ENV === 'test'
                 ? process.env.DB_NAME_TEST || 'testdb'
                 : process.env.DB_NAME;
 const mongodbUri = process.env.MONGODB_URI + dbName;
+console.log(mongodbUri);
 mongoose.connect(mongodbUri, { useNewUrlParser: true });
 mongoose.connection.on('error', (err) => {
   console.error(err);
@@ -66,26 +69,29 @@ app.use(session({
   })
 }));
 
-// TODO: 
-// Cors enable
+/**
+ *  Cors enable
+ */
+// TODO: Later implement route specific CORS or dynamic origin. Now allowed for all origin
+app.use(cors());
 
 /**
- * Set up routes
+ * Set up versioning and routes
  */
-app.use('/', router);
+console.log(routes);
+app.use('/', routes.v1);
+app.use('/v1/', routes.v1);
 
 /**
  * App wide handlers for unsupported and error
  */
 app.use(function(req, res, next) {
   console.log(req.status);
-    res.status(501).send(JSON.stringify({
-      message: 'Oh that is not supported yet'
-    }));
+    createResponse(res, 501, 'That is not supported yet');
 });
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).send('Something broke!')
+  createResponse(res, 500, 'Something broke! Please raise a ticket');
 });
 
 
