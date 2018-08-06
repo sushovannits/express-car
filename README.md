@@ -39,11 +39,14 @@ yarn run build
 
 ## Run
 - By default app will start at `http://localhost:8000/`
-- Must start mongodb with `mongod` command
-
-```
-yarn run start
-```
+- Must start mongodb with command in some other shell. It will listen at port 27017 by default
+  ```
+  mongod
+  ```
+- Start the server
+  ```
+  yarn run start
+  ```
 
 ## Docker
 Commands
@@ -68,18 +71,24 @@ docker-compose up
 ### GET /cars
 
 - Retrieves cars from database.
-- Supports query params like:
+- Supports query params: `make`, `model`, `color`, `page`
+- Supports query params example:
  ```
- /cars?make=Ford&color=White
+ /cars?make=Ford&color=White&page=2
  ```
 - Supported query type is: AND of all fields specifiednd OR of all values of a field, i.e., 
   for make=Ford&make=Subaru&color=White&color=Black, all models which are either [Ford, White], [Ford, Black], [Subaru, White] and [Subaru. Black] will be returned.
+- By default it returns page 0
+- The count for each page is 10 by default.
+- Will return a 404 if page queried is out of bound
   
 ### GET /car/:id
  - Retieve car by id
    ```
    /cars/5b6632b7e5f0c52909104905
    ```
+ - The id is to be retieved from the response body of a POST or GET /cars
+
 ### POST /cars
  - Create a car
  - JSON accepted
@@ -91,6 +100,22 @@ docker-compose up
      "color" : "Pink"
     }
    ```
+  - Sample response would be:
+    ```
+    {
+    "message": "Car created",
+    "body": {
+        "_id": "5b6854e2f7b9ef534db67e92",
+        "make": "ford",
+        "model": "ecosport",
+        "color": "Pink",
+        "createdAt": "2018-08-06T14:02:10.606Z",
+        "updatedAt": "2018-08-06T14:02:10.606Z",
+        "__v": 0
+       }
+    }
+    ```
+
 ### PUT /cars/:id
  - Update a car by id
  - Request body should be:
@@ -101,6 +126,22 @@ docker-compose up
      "color" : "Pink"
     }
     ```
+  - Returns the updated item in response as 
+    ```
+    {
+    "message": "Car updated",
+    "body": {
+        "_id": "5b6854e2f7b9ef534db67e92",
+        "make": "ford",
+        "model": "endeavour",
+        "color": "Black",
+        "createdAt": "2018-08-06T14:02:10.606Z",
+        "updatedAt": "2018-08-06T14:06:40.052Z",
+        "__v": 0
+      }
+    }
+    ```
+
 ### PATCH /cars/:id
  - Modify fields
  - Example:
@@ -110,6 +151,8 @@ docker-compose up
      "make" : "ford",
     }
    ```
+  - Returns modified item in response like in PUT
+
 ### DELETE /cars/:id
  - Delete a car
      
