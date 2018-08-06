@@ -52,10 +52,12 @@ docker-compose up
   - `make`: Required. String.
   - `model`: Required. String.
   - `color` : Required. One of [Black, Blue, White, Brown...] (_All CSS colours_) (_Case sensitive_)
- _ Response Body
+
+- Response Body
   - `errorMsg`: String
   - `message`: String. Present if `errorMsg` not present
   - `body`: Object. Present if `errorMsg` not present
+
 ## API
 
 ### GET /cars
