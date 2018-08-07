@@ -1,15 +1,10 @@
 import fs from 'fs';
 import faker from 'faker';
-import Lamlog from 'lamlog';
 import Car from '../../models/cars';
 import colors from '../../models/colors';
+import { createLogger } from '../utils';
 
-const logger = new Lamlog({
-  name: 'app',
-  level: process.env.NODE_ENV === 'dev'
-    ? 'debug'
-    : 'error',
-});
+const logger = createLogger();
 // TODO: Put it in init function
 const carFakeData = JSON.parse(fs.readFileSync(`${__dirname}/car-mock-data.json`));
 const makerArr = Object.keys(carFakeData);
@@ -83,7 +78,7 @@ export async function populateDbMock({
     if (err && err.code === 11000) {
       return true;
     }
-    logger.debug(err);
+    logger.err(err);
     return false;
   }
 }

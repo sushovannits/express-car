@@ -1,17 +1,12 @@
 import mongoose from 'mongoose';
-import Lamlog from 'lamlog';
 import Car from '../models/cars';
 import {
   createResponse,
   handleMongooseError,
+  createLogger,
 } from './utils';
 
-const logger = new Lamlog({
-  name: 'app',
-  level: process.env.NODE_ENV === 'dev'
-    ? 'debug'
-    : 'error',
-});
+const logger = createLogger();
 
 // TODO: Use a util/createResponse function
 // TDOD: Use req.json
@@ -27,7 +22,6 @@ export async function getCars(req, res) {
     const query = Car.find();
     const queryArray = [];
     const validFields = Object.keys(Car.schema.paths);
-    logger.debug(req.query);
     Object.keys(req.query || {}).forEach((criteria) => {
       if (validFields.find(field => criteria === field)) {
         const arrValues = req.query[criteria] instanceof Array

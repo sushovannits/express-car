@@ -7,17 +7,12 @@ import ConnectMongo from 'connect-mongo';
 import chalk from 'chalk';
 import loggerMiddleware from 'morgan';
 import cors from 'cors';
-import Lamlog from 'lamlog';
+import { createLogger } from './handlers/utils';
 import routes from './router/routes';
 import { createResponse } from './handlers/utils';
 import config from './config';
 
-const logger = new Lamlog({
-  name: 'app',
-  level: process.env.NODE_ENV === 'dev'
-    ? 'debug'
-    : 'error',
-});
+const logger = createLogger();
 
 const MongoStore = ConnectMongo(session);
 
@@ -83,7 +78,6 @@ app.use('/v1/', routes.v1);
  * App wide handlers for unsupported and error
  */
 app.use((req, res) => {
-  logger.info(req.status);
   createResponse(res, 501, 'That is not supported yet');
 });
 app.use((err, _, res) => {
