@@ -49,6 +49,7 @@ yarn run build
   ```
 
 ## Docker
+For docker the .ev file contains the configuration.
 Commands
 ```
 docker-compose build
