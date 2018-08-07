@@ -58,9 +58,9 @@ docker-compose up
 
 ## Schema
 - Car
-  - `make`: Required. String.
-  - `model`: Required. String.
-  - `color` : Required. One of [Black, Blue, White, Brown...] (_All CSS colours_) (_Case sensitive_)
+  - `make`: Required. Type: String.
+  - `model`: Required. Type: String.
+  - `color` : Required. Type: Enum. One of [Black, Blue, White, Brown...] (_All CSS colours_) (_Case sensitive_)
 
 - Response Body
   - `errorMsg`: String
@@ -93,6 +93,7 @@ docker-compose up
 ### POST /cars
  - Create a car
  - JSON accepted
+ - Combination of make, model, color should be unqiue (Compound index)
  - Request body should be:
    ```
     {
@@ -119,6 +120,7 @@ docker-compose up
 
 ### PUT /cars/:id
  - Update a car by id
+ - Combination of make, model, color should be unqiue (Compound index)
  - Request body should be:
    ```
    {
@@ -145,6 +147,7 @@ docker-compose up
 
 ### PATCH /cars/:id
  - Modify fields
+ - Combination of make, model, color should be unqiue (Compound index)
  - Example:
    ```
    {
@@ -164,6 +167,7 @@ docker-compose up
 - Used supertest for integration test
 - Used mongodb for express session storage also
 - Cors enabled
+- Compound index in db on make, model and color
 
 ## Unit Test
 ```
