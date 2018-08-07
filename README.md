@@ -161,7 +161,7 @@ docker-compose up
  - Delete a car
      
 ## Implementation Details
-- ES6 is used and babel is used to transpile
+- ES6/7 is used and babel is used to transpile
 - Versioning of API is done
 - Supports query of car
 - Used supertest for integration test
